@@ -1,7 +1,7 @@
 import { AppBar, Grid, IconButton, Toolbar, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import CarDetailsCard from "./components/cardDetailsCard";
-import { Filter } from "./components/filter";
+import { FilterFacets } from "./components/filterFacets";
 import { data } from "./data";
 
 function App() {
@@ -99,7 +99,7 @@ function App() {
       <Grid container spacing={2} p={16}>
         <Grid item xs={2}>
           {filterConfigs.map(({ label, filterValues }) => (
-            <Filter
+            <FilterFacets
               key={label}
               category={label}
               filters={filterValues}

@@ -9,11 +9,11 @@ import {
 
 type filterProps = {
   category: string;
-  filters: string[] | number[];
+  filters: string[];
   handleChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
-export function Filter({ category, filters, handleChange }: filterProps) {
+export function FilterFacets({ category, filters, handleChange }: filterProps) {
   return (
     <Box p={2}>
       <FormLabel component="legend">{capitalize(category)}</FormLabel>
