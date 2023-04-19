@@ -16,10 +16,6 @@ function App() {
     model: [],
   });
 
-  const year: string[] = [];
-  let model: string[] = [];
-  let brand: string[] = [];
-
   const brands = [...new Set(data.map((car) => car.brand).sort())];
   const models = [...new Set(data.map((car) => car.model).sort())];
   const years = [...new Set(data.map((car) => car.year).sort())];
@@ -31,50 +27,48 @@ function App() {
   ];
 
   useEffect(() => {
-    if (cars.length <= 0) {
+    if (
+      state.year.length <= 0 &&
+      state.model.length <= 0 &&
+      state.brand.length <= 0
+    ) {
       setCars(data);
     }
-  }, [cars]);
+  }, [state]);
+
+  const getFilterCategory = (expr: string) => {
+    switch (expr) {
+      case "year":
+        return state.year;
+      case "brand":
+        return state.brand;
+      case "model":
+        return state.model;
+      default:
+        console.log(`Sorry, we are out of ${expr}.`);
+        return [];
+    }
+  };
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.name === "year") {
-      const id = year.findIndex((y) => y === event.target.value);
-      if (event.target.checked && id < 0) {
-        year.push(event.target.value);
-      } else {
-        year.splice(id, 1);
-      }
-
-      setState({
-        ...state,
-        [event.target.name]: year,
-      });
-
-      setCars(cars.filter((car) => year.includes(car.year)));
-    } else if (event.target.name === "model") {
-      const id = model.findIndex((y) => y === event.target.value);
-      if (event.target.checked && id < 0) {
-        model.push(event.target.value);
-      } else {
-        model.splice(id, 1);
-      }
-      setState({
-        ...state,
-        [event.target.name]: model,
-      });
-      setCars(cars.filter((car) => model.includes(car.model)));
-    } else if (event.target.name === "brand") {
-      const id = brand.findIndex((y) => y === event.target.value);
-      if (event.target.checked && id < 0) {
-        brand.push(event.target.value);
-      } else {
-        brand.splice(id, 1);
-      }
-      setState({
-        ...state,
-        [event.target.name]: brand,
-      });
+    const filter = getFilterCategory(event.target.name);
+    const isAlreadyAvailable = filter.findIndex(
+      (filterValues) => filterValues === event.target.value
+    );
+    if (event.target.checked && isAlreadyAvailable < 0) {
+      filter.push(event.target.value);
+    } else {
+      filter.splice(isAlreadyAvailable, 1);
     }
+
+    setState({
+      ...state,
+      [event.target.name]: filter,
+    });
+    // eslint-disable-next-line no-eval
+    setCars(
+      cars.filter((car) => eval(`car.${event.target.name}`).includes(filter))
+    );
   };
 
   return (
