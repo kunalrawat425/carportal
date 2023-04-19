@@ -1,4 +1,12 @@
-import { AppBar, Grid, IconButton, Toolbar, Typography } from "@mui/material";
+import {
+  Alert,
+  AppBar,
+  Grid,
+  IconButton,
+  Link,
+  Toolbar,
+  Typography,
+} from "@mui/material";
 import React, { useEffect, useState } from "react";
 import CarDetailsCard from "./components/cardDetailsCard";
 import { FilterFacets } from "./components/filterFacets";
@@ -6,7 +14,7 @@ import { data } from "./data";
 
 function App() {
   const [cars, setCars] = useState(data);
-  const [state, setState] = useState<{
+  const [state, setFilters] = useState<{
     year: string[];
     brand: string[];
     model: string[];
@@ -49,7 +57,13 @@ function App() {
         return [];
     }
   };
-
+  const resetFilters = () => {
+    setFilters({
+      year: [],
+      brand: [],
+      model: [],
+    });
+  };
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const filter = getFilterCategory(event.target.name);
     const isAlreadyAvailable = filter.findIndex(
@@ -61,7 +75,7 @@ function App() {
       filter.splice(isAlreadyAvailable, 1);
     }
 
-    setState({
+    setFilters({
       ...state,
       [event.target.name]: filter,
     });
@@ -101,14 +115,25 @@ function App() {
             />
           ))}
         </Grid>
-        <Grid item xs={10} container>
-          <Grid container spacing={{ xs: 4 }} item>
+        <Grid item xs={10}>
+          <Grid container spacing={{ xs: 4 }}>
             {cars.map((car) => (
-              <Grid item xs={12} sm={6} md={3} key={car.id}>
+              <Grid item xs={12} sm={6} md={4} lg={3} key={car.id}>
                 <CarDetailsCard car={car} />
               </Grid>
             ))}
           </Grid>
+          {cars.length <= 0 && (
+            <Alert variant="outlined" severity="error" sx={{ mt: "20px" }}>
+              No cars found for selected filters, try resetting filters
+              <Link
+                onClick={() => resetFilters()}
+                sx={{ marginLeft: "10px", cursor: "pointer" }}
+              >
+                {"Reset filters"}
+              </Link>
+            </Alert>
+          )}
         </Grid>
       </Grid>
     </React.Fragment>
