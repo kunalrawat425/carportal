@@ -11,7 +11,7 @@ type cardDetailsCardProps = {
 export default function CarDetailsCard({ car }: cardDetailsCardProps) {
   const { imageUrl, model, year, brand } = car;
   return (
-    <Card sx={{ maxWidth: 345 }}>
+    <Card >
       <CardActionArea>
         <CardMedia component="img" height="300" image={imageUrl} alt={model} />
         <CardContent>

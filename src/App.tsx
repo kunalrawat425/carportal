@@ -90,7 +90,7 @@ function App() {
         </Toolbar>
       </AppBar>
 
-      <Grid container spacing={2} p={16}>
+      <Grid container spacing={2} p={8} pt={12}>
         <Grid item xs={2}>
           {filterConfigs.map(({ label, filterValues }) => (
             <FilterFacets
@@ -101,8 +101,8 @@ function App() {
             />
           ))}
         </Grid>
-        <Grid item xs={8}>
-          <Grid container spacing={{ xs: 4 }}>
+        <Grid item xs={10} container>
+          <Grid container spacing={{ xs: 4 }} item>
             {cars.map((car) => (
               <Grid item xs={12} sm={6} md={3} key={car.id}>
                 <CarDetailsCard car={car} />
